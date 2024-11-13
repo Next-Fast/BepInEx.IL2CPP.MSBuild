@@ -35,35 +35,9 @@ namespace BepInEx.IL2CPP.MSBuild
                 const string iced = "Iced";
                 const string logging = "Microsoft.Extensions.Logging.Abstractions";
 
-                if (id is common or generator or cecil or iced or logging)
-                {
-                    var dllPath = reference.ItemSpec;
-
-#if NET472
-                    // Workaround Visual Studio still using old .net framework for whatever reason. WHY MICROSOFT, WHY?
-                    switch (id)
-                    {
-                        case common:
-                        case generator:
-                            dllPath = dllPath.Replace("netstandard2.1", "net472");
-                            break;
-
-                        case cecil:
-                            dllPath = dllPath.Replace("netstandard2.0", "net40");
-                            break;
-
-                        case iced:
-                            dllPath = dllPath.Replace("netstandard2.1", "net45").Replace("netstandard2.0", "net45");
-                            break;
-
-                        case logging:
-                            dllPath = dllPath.Replace("net6.0", "net461");
-                            break;
-                    }
-#endif
-
-                    assemblies.Add(reference.GetMetadata("Filename"), dllPath);
-                }
+                if (id is not (common or generator or cecil or iced or logging)) continue;
+                var dllPath = reference.ItemSpec;
+                assemblies.Add(reference.GetMetadata("Filename"), dllPath);
             }
 
             if (!assemblies.Any())
@@ -93,14 +67,11 @@ namespace BepInEx.IL2CPP.MSBuild
                 }
 
                 var packagedPath = Path.Combine(packagePath, assemblyName.Name + ".dll");
-                if (File.Exists(packagedPath))
-                {
-                    Log.LogMessage("Loading " + packagedPath);
-                    // LoadFile here is used on purpose as a workaround to avoid double loading BepInEx.IL2CPP.MSBuild.Shared
-                    return Assembly.LoadFile(packagedPath);
-                }
+                if (!File.Exists(packagedPath)) return null;
+                Log.LogMessage("Loading " + packagedPath);
+                // LoadFile here is used on purpose as a workaround to avoid double loading BepInEx.IL2CPP.MSBuild.Shared
+                return Assembly.LoadFile(packagedPath);
 
-                return null;
             };
 
             var interopAssemblies = new List<ITaskItem>();

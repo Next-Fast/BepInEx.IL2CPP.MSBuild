@@ -5,6 +5,7 @@ using System.IO.Compression;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using AsmResolver.DotNet;
 using BepInEx.IL2CPP.MSBuild.Shared;
 using Il2CppInterop.Common;
 using Il2CppInterop.Generator;
@@ -12,20 +13,12 @@ using Il2CppInterop.Generator.MetadataAccess;
 using Il2CppInterop.Generator.Runners;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-using Mono.Cecil;
 using Task = System.Threading.Tasks.Task;
 
 namespace BepInEx.IL2CPP.MSBuild.Runner
 {
-    public class Il2CppInteropManager
+    public class Il2CppInteropManager(TaskLoggingHelper logger)
     {
-        private readonly TaskLoggingHelper _logger;
-
-        public Il2CppInteropManager(TaskLoggingHelper logger)
-        {
-            _logger = logger;
-        }
-
         public async Task<string> GenerateAsync(GameLibsPackage gameLibsPackage, string il2CppInteropVersion)
         {
             var outputDirectory = Path.Combine(Context.CachePath, "game-libs", gameLibsPackage.Id, gameLibsPackage.Version, "interop", il2CppInteropVersion);
@@ -33,17 +26,17 @@ namespace BepInEx.IL2CPP.MSBuild.Runner
             var hashPath = Path.Combine(outputDirectory, "hash.txt");
             var hash = ComputeHash(gameLibsPackage.DummyDirectory, gameLibsPackage.UnityVersion);
 
-            if (File.Exists(hashPath) && File.ReadAllText(hashPath) == hash)
+            if (File.Exists(hashPath) && await File.ReadAllTextAsync(hashPath) == hash)
             {
-                _logger.LogMessage(MessageImportance.High, $"Reused {gameLibsPackage.Id} interop assemblies from cache");
+                logger.LogMessage(MessageImportance.High, $"Reused {gameLibsPackage.Id} interop assemblies from cache");
                 return outputDirectory;
             }
 
-            _logger.LogMessage(MessageImportance.High, $"Generating interop assemblies for {gameLibsPackage.Id} (version: {gameLibsPackage.Version}, unity version: {gameLibsPackage.UnityVersion}, il2cppinterop version: {il2CppInteropVersion})");
+            logger.LogMessage(MessageImportance.High, $"Generating interop assemblies for {gameLibsPackage.Id} (version: {gameLibsPackage.Version}, unity version: {gameLibsPackage.UnityVersion}, il2cppinterop version: {il2CppInteropVersion})");
 
             await RunIl2CppInteropGenerator(gameLibsPackage, outputDirectory);
 
-            File.WriteAllText(hashPath, hash);
+            await File.WriteAllTextAsync(hashPath, hash);
 
             return outputDirectory;
         }
@@ -51,14 +44,14 @@ namespace BepInEx.IL2CPP.MSBuild.Runner
         private async Task RunIl2CppInteropGenerator(GameLibsPackage gameLibsPackage, string outputDirectory)
         {
             var sourceFiles = Directory.GetFiles(gameLibsPackage.DummyDirectory, "*.dll");
-            using var source = new CecilMetadataAccess(sourceFiles);
+            using var source = new AssemblyMetadataAccess(sourceFiles);
             Il2CppInteropGenerator.Create(new GeneratorOptions
                 {
                     Source = (List<AssemblyDefinition>)source.Assemblies,
                     OutputDir = outputDirectory,
                     UnityBaseLibsDir = await GetUnityLibsAsync(gameLibsPackage.UnityVersion),
                 })
-                .AddLogger(new TaskLogger(_logger))
+                .AddLogger(new TaskLogger(logger))
                 .AddInteropAssemblyGenerator()
                 .Run();
         }
@@ -77,6 +70,19 @@ namespace BepInEx.IL2CPP.MSBuild.Runner
         {
             using var md5 = MD5.Create();
 
+            foreach (var file in Directory.EnumerateFiles(dummyDirectory, "*.dll", SearchOption.TopDirectoryOnly))
+            {
+                HashString(md5, Path.GetFileName(file));
+                HashFile(md5, file);
+            }
+
+            HashString(md5, typeof(InteropAssemblyGenerator).Assembly.GetName().Version.ToString());
+            HashString(md5, unityVersion);
+
+            md5.TransformFinalBlock([], 0, 0);
+
+            return ByteArrayToString(md5.Hash);
+
             static void HashFile(ICryptoTransform hash, string file)
             {
                 const int defaultCopyBufferSize = 81920;
@@ -92,19 +98,6 @@ namespace BepInEx.IL2CPP.MSBuild.Runner
                 var buffer = Encoding.UTF8.GetBytes(str);
                 hash.TransformBlock(buffer, 0, buffer.Length, buffer, 0);
             }
-
-            foreach (var file in Directory.EnumerateFiles(dummyDirectory, "*.dll", SearchOption.TopDirectoryOnly))
-            {
-                HashString(md5, Path.GetFileName(file));
-                HashFile(md5, file);
-            }
-
-            HashString(md5, typeof(InteropAssemblyGenerator).Assembly.GetName().Version.ToString());
-            HashString(md5, unityVersion);
-
-            md5.TransformFinalBlock(Array.Empty<byte>(), 0, 0);
-
-            return ByteArrayToString(md5.Hash);
         }
 
         private static async Task<string> GetUnityLibsAsync(string unityVersion)
@@ -127,7 +120,7 @@ namespace BepInEx.IL2CPP.MSBuild.Runner
                 File.Delete(file);
             }
 
-            using var zipStream = await responseMessage.Content.ReadAsStreamAsync();
+            await using var zipStream = await responseMessage.Content.ReadAsStreamAsync();
             using var zipArchive = new ZipArchive(zipStream, ZipArchiveMode.Read);
             zipArchive.ExtractToDirectory(unityBaseLibsDirectory);
 

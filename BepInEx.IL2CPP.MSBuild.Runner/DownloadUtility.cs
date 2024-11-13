@@ -30,7 +30,7 @@ namespace BepInEx.IL2CPP.MSBuild.Runner
             var etag = responseMessage.Headers.ETag;
             if (etag != null)
             {
-                File.WriteAllText(etagPath, etag.ToString());
+                await File.WriteAllTextAsync(etagPath, etag.ToString());
             }
 
             return responseMessage;
@@ -48,7 +48,7 @@ namespace BepInEx.IL2CPP.MSBuild.Runner
                 return;
             }
 
-            using var destination = File.OpenWrite(path);
+            await using var destination = File.OpenWrite(path);
             await responseMessage.Content.CopyToAsync(destination);
         }
     }

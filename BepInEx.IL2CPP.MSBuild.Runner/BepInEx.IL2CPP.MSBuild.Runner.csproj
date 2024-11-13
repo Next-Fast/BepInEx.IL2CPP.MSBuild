@@ -4,13 +4,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
-        <PackageReference Include="Il2CppInterop.Generator" Version="1.1.0" />
+        <PackageReference Include="Il2CppInterop.Generator" Version="1.4.6-ci.579" />
         <ProjectReference Include="..\BepInEx.IL2CPP.MSBuild.Shared\BepInEx.IL2CPP.MSBuild.Shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup Condition="$(TargetFramework) == 'net472'">
-        <Reference Include="System.Net.Http" />
-        <Reference Include="System.IO.Compression" />
+        <PackageReference Update="PolySharp" Version="1.14.1" />
     </ItemGroup>
 </Project>

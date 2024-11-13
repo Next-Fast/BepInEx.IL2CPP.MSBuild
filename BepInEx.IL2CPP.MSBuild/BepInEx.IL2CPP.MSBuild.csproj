@@ -17,10 +17,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="16.11.0" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.6" />
 
         <ProjectReference Include="..\BepInEx.IL2CPP.MSBuild.Shared\BepInEx.IL2CPP.MSBuild.Shared.csproj" />
         <ProjectReference Include="..\BepInEx.IL2CPP.MSBuild.Runner\BepInEx.IL2CPP.MSBuild.Runner.csproj" ReferenceOutputAssembly="false" OutputItemType="ReferenceCopyLocalPaths" />
+        <PackageReference Update="PolySharp" Version="1.14.1" />
     </ItemGroup>
 
     <ItemGroup>

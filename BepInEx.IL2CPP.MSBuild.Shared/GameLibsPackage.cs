@@ -2,19 +2,11 @@ using Microsoft.Build.Framework;
 
 namespace BepInEx.IL2CPP.MSBuild.Shared
 {
-    public class GameLibsPackage
+    public class GameLibsPackage(ITaskItem taskItem)
     {
-        public string Id { get; }
-        public string DummyDirectory { get; }
-        public string Version { get; }
-        public string UnityVersion { get; }
-
-        public GameLibsPackage(ITaskItem taskItem)
-        {
-            Id = taskItem.ItemSpec;
-            Version = taskItem.GetMetadata("Version");
-            DummyDirectory = taskItem.GetMetadata("DummyDirectory");
-            UnityVersion = taskItem.GetMetadata("UnityVersion");
-        }
+        public string Id { get; } = taskItem.ItemSpec;
+        public string DummyDirectory { get; } = taskItem.GetMetadata("DummyDirectory");
+        public string Version { get; } = taskItem.GetMetadata("Version");
+        public string UnityVersion { get; } = taskItem.GetMetadata("UnityVersion");
     }
 }
