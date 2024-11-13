@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Task = Microsoft.Build.Utilities.Task;
 
-namespace BepInEx.IL2CPP.MSBuild
+namespace NextBepLoader.BepInEx.IL2CPP.MSBuild
 {
     public abstract class AsyncTask : Task
     {

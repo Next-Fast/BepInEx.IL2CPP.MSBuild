@@ -5,7 +5,7 @@
         <Nullable>enable</Nullable>
         <DebugType>embedded</DebugType>
         <VersionPrefix>2.1.0</VersionPrefix>
-        <VersionSuffix>dev</VersionSuffix>
+        <VersionSuffix>dev-6</VersionSuffix>
         <Authors>BepInEx</Authors>
     </PropertyGroup>
 

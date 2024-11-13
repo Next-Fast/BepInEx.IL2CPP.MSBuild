@@ -1,10 +1,10 @@
 using System;
 using System.Reflection;
 using System.Threading.Tasks;
-using BepInEx.IL2CPP.MSBuild.Shared;
+using NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared;
 using Microsoft.Build.Utilities;
 
-namespace BepInEx.IL2CPP.MSBuild;
+namespace NextBepLoader.BepInEx.IL2CPP.MSBuild;
 
 public sealed class Il2CppInteropManagerWrapper
 {
@@ -15,7 +15,7 @@ public sealed class Il2CppInteropManagerWrapper
 
     public Il2CppInteropManagerWrapper(TaskLoggingHelper logger)
     {
-        var type = Type.GetType("BepInEx.IL2CPP.MSBuild.Runner.Il2CppInteropManager, BepInEx.IL2CPP.MSBuild.Runner", true);
+        var type = Type.GetType("NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner.Il2CppInteropManager, NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner", true);
         _instance = Activator.CreateInstance(type, logger);
         _generateAsync = (GenerateAsyncDelegate)type.GetMethod("GenerateAsync", BindingFlags.Public | BindingFlags.Instance)!.CreateDelegate(typeof(GenerateAsyncDelegate), _instance);
     }

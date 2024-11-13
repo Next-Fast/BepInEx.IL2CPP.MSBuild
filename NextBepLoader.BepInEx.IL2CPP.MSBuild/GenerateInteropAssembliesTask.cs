@@ -4,11 +4,11 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using BepInEx.IL2CPP.MSBuild.Shared;
+using NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
-namespace BepInEx.IL2CPP.MSBuild
+namespace NextBepLoader.BepInEx.IL2CPP.MSBuild
 {
     public class GenerateInteropAssembliesTask : AsyncTask
     {
@@ -21,6 +21,16 @@ namespace BepInEx.IL2CPP.MSBuild
         [Output]
         public ITaskItem[]? InteropAssemblies { get; set; }
 
+        public static readonly List<string> StartGetPackageId = 
+            [
+                "Il2CppInterop",
+                "MonoMod",
+                "Mono",
+                "Iced",
+                "Microsoft.Extensions",
+                "AsmResolver"
+            ];
+
         public override async Task<bool> ExecuteAsync()
         {
             var assemblies = new Dictionary<string, string>();
@@ -29,13 +39,7 @@ namespace BepInEx.IL2CPP.MSBuild
             {
                 var id = reference.GetMetadata("NuGetPackageId");
 
-                const string common = "Il2CppInterop.Common";
-                const string generator = "Il2CppInterop.Generator";
-                const string cecil = "Mono.Cecil";
-                const string iced = "Iced";
-                const string logging = "Microsoft.Extensions.Logging.Abstractions";
-
-                if (id is not (common or generator or cecil or iced or logging)) continue;
+                if (!StartGetPackageId.Any(n => id.StartsWith(id))) continue;
                 var dllPath = reference.ItemSpec;
                 assemblies.Add(reference.GetMetadata("Filename"), dllPath);
             }
@@ -69,9 +73,8 @@ namespace BepInEx.IL2CPP.MSBuild
                 var packagedPath = Path.Combine(packagePath, assemblyName.Name + ".dll");
                 if (!File.Exists(packagedPath)) return null;
                 Log.LogMessage("Loading " + packagedPath);
-                // LoadFile here is used on purpose as a workaround to avoid double loading BepInEx.IL2CPP.MSBuild.Shared
+                // LoadFile here is used on purpose as a workaround to avoid double loading NextBepLoader.NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared
                 return Assembly.LoadFile(packagedPath);
-
             };
 
             var interopAssemblies = new List<ITaskItem>();

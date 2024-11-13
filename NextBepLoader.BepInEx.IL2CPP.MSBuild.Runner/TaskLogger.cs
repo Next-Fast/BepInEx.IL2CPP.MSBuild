@@ -4,20 +4,13 @@ using Microsoft.Build.Utilities;
 using Microsoft.Extensions.Logging;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
-namespace BepInEx.IL2CPP.MSBuild.Runner;
+namespace NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner;
 
-public class TaskLogger : ILogger
+public class TaskLogger(TaskLoggingHelper logger) : ILogger
 {
-    private readonly TaskLoggingHelper _logger;
-
-    public TaskLogger(TaskLoggingHelper logger)
-    {
-        _logger = logger;
-    }
-
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
-        _logger.LogMessage(logLevel switch
+        logger.LogMessage(logLevel switch
         {
             LogLevel.None => MessageImportance.Low,
             LogLevel.Trace => MessageImportance.Low,

@@ -6,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using AsmResolver.DotNet;
-using BepInEx.IL2CPP.MSBuild.Shared;
+using NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared;
 using Il2CppInterop.Common;
 using Il2CppInterop.Generator;
 using Il2CppInterop.Generator.MetadataAccess;
@@ -15,7 +15,7 @@ using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Task = System.Threading.Tasks.Task;
 
-namespace BepInEx.IL2CPP.MSBuild.Runner
+namespace NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner
 {
     public class Il2CppInteropManager(TaskLoggingHelper logger)
     {

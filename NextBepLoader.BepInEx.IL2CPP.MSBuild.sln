@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BepInEx.IL2CPP.MSBuild", "BepInEx.IL2CPP.MSBuild\BepInEx.IL2CPP.MSBuild.csproj", "{D5DC7DDA-55AC-4B0E-A6F3-061A4284A5FE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextBepLoader.BepInEx.IL2CPP.MSBuild", "NextBepLoader.BepInEx.IL2CPP.MSBuild\NextBepLoader.BepInEx.IL2CPP.MSBuild.csproj", "{D5DC7DDA-55AC-4B0E-A6F3-061A4284A5FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BepInEx.IL2CPP.MSBuild.Runner", "BepInEx.IL2CPP.MSBuild.Runner\BepInEx.IL2CPP.MSBuild.Runner.csproj", "{A8870946-1320-4C0E-BFD0-113BBADD1D53}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner", "NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner\NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner.csproj", "{A8870946-1320-4C0E-BFD0-113BBADD1D53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BepInEx.IL2CPP.MSBuild.Shared", "BepInEx.IL2CPP.MSBuild.Shared\BepInEx.IL2CPP.MSBuild.Shared.csproj", "{45DE5D4D-D903-41D7-A4DE-44F68083D970}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared", "NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared\NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared.csproj", "{45DE5D4D-D903-41D7-A4DE-44F68083D970}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

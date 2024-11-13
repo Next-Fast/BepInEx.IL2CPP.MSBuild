@@ -2,7 +2,7 @@
     <PropertyGroup>
         <Description>MSBuild integration for BepInEx.IL2CPP plugin developers</Description>
         <RepositoryType>git</RepositoryType>
-        <RepositoryUrl>https://github.com/BepInEx/BepInEx.IL2CPP.MSBuild</RepositoryUrl>
+        <RepositoryUrl>https://github.com/Next-Fast/BepInEx.IL2CPP.MSBuild</RepositoryUrl>
         <PackageLicenseExpression>LGPL-3.0-or-later</PackageLicenseExpression>
         <PackageIcon>logo.png</PackageIcon>
 
@@ -19,14 +19,17 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.12.6" />
 
-        <ProjectReference Include="..\BepInEx.IL2CPP.MSBuild.Shared\BepInEx.IL2CPP.MSBuild.Shared.csproj" />
-        <ProjectReference Include="..\BepInEx.IL2CPP.MSBuild.Runner\BepInEx.IL2CPP.MSBuild.Runner.csproj" ReferenceOutputAssembly="false" OutputItemType="ReferenceCopyLocalPaths" />
+        <ProjectReference Include="..\NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared\NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared.csproj" />
+        <ProjectReference Include="..\NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner\NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner.csproj" ReferenceOutputAssembly="false" OutputItemType="ReferenceCopyLocalPaths" />
         <PackageReference Update="PolySharp" Version="1.14.1" />
     </ItemGroup>
 
     <ItemGroup>
         <None Include="..\assets\logo.png" Pack="true" Visible="false" PackagePath="" />
-        <Content Include="$(MSBuildProjectName).props" Pack="true" PackagePath="build" />
+        <Content Include="NextBepLoader.BepInEx.IL2CPP.MSBuild.props">
+          <Pack>true</Pack>
+          <PackagePath>build</PackagePath>
+        </Content>
     </ItemGroup>
 
     <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
