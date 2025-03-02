@@ -28,7 +28,7 @@ jobs:
         with:
           verbosity: Diagnostic
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: BepInEx.IL2CPP.MSBuild.nupkg
           path: ./Build/*.nupkg
