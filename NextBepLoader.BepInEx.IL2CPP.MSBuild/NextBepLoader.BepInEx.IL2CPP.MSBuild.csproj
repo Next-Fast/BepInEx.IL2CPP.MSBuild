@@ -17,7 +17,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.14.8" />
 
         <ProjectReference Include="..\NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared\NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared.csproj" />
         <ProjectReference Include="..\NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner\NextBepLoader.BepInEx.IL2CPP.MSBuild.Runner.csproj" ReferenceOutputAssembly="false" OutputItemType="ReferenceCopyLocalPaths" />

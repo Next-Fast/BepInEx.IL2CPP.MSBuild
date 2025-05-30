@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.13.9" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.14.8" />
         <PackageReference Update="PolySharp" Version="1.15.0" />
     </ItemGroup>
 </Project>
