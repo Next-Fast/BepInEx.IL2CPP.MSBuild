@@ -5,6 +5,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared\NextBepLoader.BepInEx.IL2CPP.MSBuild.Shared.csproj" />
+        <PackageReference Include="Il2CppInterop.Generator" Version="1.5.0" />
         <PackageReference Update="PolySharp" Version="1.15.0" />
     </ItemGroup>
 </Project>
